@@ -12,13 +12,13 @@ fun loadContributorsCallbacks(service: GitHubService, req: RequestData, updateRe
         logRepos(req, responseRepos)
         val repos = responseRepos.bodyList()
         val allUsers = Collections.synchronizedList(mutableListOf<User>())
-        val numberOfProcessed = AtomicInteger(0)
+        val reposProcessed = AtomicInteger()
         for (repo in repos) {
             service.getRepoContributorsCall(req.org, repo.name).onResponse { responseUsers ->
                 logUsers(repo, responseUsers)
                 val users = responseUsers.bodyList()
                 allUsers += users
-                if (numberOfProcessed.incrementAndGet() == repos.size) {
+                if (reposProcessed.incrementAndGet() == repos.size) {
                     updateResults(allUsers.aggregate())
                 }
             }

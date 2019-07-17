@@ -19,3 +19,13 @@ fun List<User>.aggregate(): List<User> =
         .map { (login, group) -> User(login, group.sumBy { it.contributions }) }
         .sortedBy { it.login }
         .sortedByDescending { it.contributions }
+
+fun List<User>.aggregateAlt(): List<User> = this.groupBy { it.login }
+        .values
+        .map {
+            it.reduce {
+                    acc, item -> User(item.login, acc.contributions + item.contributions)
+            }
+        }
+        .sortedWith(compareBy({it.login})).reversed()
+        .sortedWith(compareBy({it.contributions})).reversed()

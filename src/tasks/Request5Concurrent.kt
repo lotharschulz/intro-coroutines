@@ -7,14 +7,16 @@ suspend fun loadContributorsConcurrent(service: GitHubService, req: RequestData)
     val repos = service
         .getOrgRepos(req.org)
         .also { logRepos(req, it) }
-        .bodyList()
+        .body() ?: listOf()
 
     val deferreds: List<Deferred<List<User>>> = repos.map { repo ->
-        async {
-            service.getRepoContributors(req.org, repo.name)
+        async(Dispatchers.Default) {
+            service
+                .getRepoContributors(req.org, repo.name)
+                .also { log("repo: ${repo.name} contained $it contributors") }
                 .also { logUsers(repo, it) }
                 .bodyList()
         }
     }
-    deferreds.awaitAll().flatten().aggregate()
+    deferreds.awaitAll().flatten().aggregate()  // the last expression inside the lambda is the result
 }

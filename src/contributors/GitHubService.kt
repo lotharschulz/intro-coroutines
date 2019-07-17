@@ -1,11 +1,8 @@
 package contributors
 
+//import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties
 import com.fasterxml.jackson.module.kotlin.jacksonObjectMapper
-import io.reactivex.Flowable
-import io.reactivex.Single
-import io.reactivex.Observable
-//import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import okhttp3.OkHttpClient
 import retrofit2.Call
 import retrofit2.Response
@@ -17,16 +14,7 @@ import retrofit2.http.Path
 import java.util.*
 
 interface GitHubService {
-    @GET("orgs/{org}/repos?per_page=100")
-    fun getOrgReposCall(
-        @Path("org") org: String
-    ): Call<List<Repo>>
-
-    @GET("repos/{owner}/{repo}/contributors?per_page=100")
-    fun getRepoContributorsCall(
-        @Path("owner") owner: String,
-        @Path("repo") repo: String
-    ): Call<List<User>>
+    // getOrgReposCall & getRepoContributorsCall declarations
 
     @GET("orgs/{org}/repos?per_page=100")
     suspend fun getOrgRepos(
@@ -38,6 +26,17 @@ interface GitHubService {
         @Path("owner") owner: String,
         @Path("repo") repo: String
     ): Response<List<User>>
+
+    @GET("orgs/{org}/repos?per_page=100")
+    fun getOrgReposCall(
+        @Path("org") org: String
+    ): Call<List<Repo>>
+
+    @GET("repos/{owner}/{repo}/contributors?per_page=100")
+    fun getRepoContributorsCall(
+        @Path("owner") owner: String,
+        @Path("repo") repo: String
+    ): Call<List<User>>
 }
 
 @JsonIgnoreProperties(ignoreUnknown = true)
