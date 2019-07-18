@@ -6,10 +6,21 @@ import contributors.testRequestData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.test.runBlockingTest
 import org.junit.Assert
+import org.junit.Ignore
 import org.junit.Test
 
+/*
+  This one fails with
+  `java.lang.IllegalStateException: This job has not completed yet`
+
+  I wait for
+  - https://github.com/Kotlin/kotlinx.coroutines/issues/1204
+  - https://github.com/Kotlin/kotlinx.coroutines/pull/1206
+  fixed and released with further actions.
+ */
 @UseExperimental(ExperimentalCoroutinesApi::class)
 class Request5ConcurrentKtTest {
+    @Ignore
     @Test
     fun testConcurrent() = runBlockingTest {
         val startTime = currentTime
