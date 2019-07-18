@@ -20,7 +20,7 @@ suspend fun loadContributorsChannels(
 
         for ((index, repo) in repos.withIndex()) {
             val users = service.getRepoContributors(req.org, repo.name)
-                .also { log("repo: ${repo.name} contained $it contributors") }
+                .also { log("repo: ${repo.name}") }
                 .bodyList()
             channel.send(users)
         }
